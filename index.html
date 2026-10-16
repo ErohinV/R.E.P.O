@@ -57,7 +57,7 @@
   </script>
 
   <style>
-    /* STREAMING_CHUNK:Styling layout and scrollbars */
+    /* STREAMING_CHUNK:Styling page structure and UI components */
     body {
       background-color: #07090e;
       color: #f1f5f9;
@@ -116,7 +116,7 @@
 <body class="min-h-screen font-sans flex flex-col justify-between overflow-x-hidden selection:bg-repo-green selection:text-black">
 
   <!-- TOP HEADER -->
-  <!-- STREAMING_CHUNK:Rendering main header component -->
+  /* STREAMING_CHUNK:Rendering header controls */
   <header class="border-b border-repo-border/80 bg-repo-card/80 backdrop-blur-xl sticky top-0 z-30 transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
       
@@ -173,7 +173,7 @@
   </header>
 
   <!-- MAIN CONTENT -->
-  <!-- STREAMING_CHUNK:Rendering main container elements -->
+  /* STREAMING_CHUNK:Rendering main container layout */
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow flex flex-col justify-center gap-6">
 
     <!-- MODE FILTER BAR -->
@@ -622,7 +622,7 @@
   </div>
 
   <!-- MODAL 6: JSON ASSIGNMENTS & GITHUB LOG MODAL -->
-  <!-- STREAMING_CHUNK:Rendering GitHub JSON Configuration and Log Modal -->
+  /* STREAMING_CHUNK:Rendering GitHub API settings modal */
   <div id="jsonLogModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="bg-repo-card border border-repo-purple/50 rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col p-6 shadow-neon-purple relative">
       
@@ -714,7 +714,7 @@
   </footer>
 
   <!-- FIREBASE MODULE & APPLICATION LOGIC -->
-  <!-- STREAMING_CHUNK:Implementing GitHub API direct commit logic and application lifecycle -->
+  /* STREAMING_CHUNK:Initializing application modules and GitHub REST API integration */
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { 
@@ -744,7 +744,7 @@
     let app, auth, db;
     let currentUser = null;
 
-    // Keys for local persistence
+    // Keys for local persistence across reloads / GitHub Pages
     const LOCAL_KEY_TASKS = 'repo_wheel_tasks_v7';
     const LOCAL_KEY_ACCEPTED = 'repo_wheel_accepted_v7';
     const LOCAL_KEY_HISTORY = 'repo_wheel_history_v7';
