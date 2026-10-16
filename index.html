@@ -6,18 +6,17 @@
   <title>R.E.P.O. - Колесо Фортуни & WebCam / IRL Челенджі</title>
   
   <!-- Tailwind CSS -->
-  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <!-- Canvas Confetti -->
-  <script src="[https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js](https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js)"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Google Fonts: Orbitron & Inter -->
-  <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
-  <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-  <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;800;900&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;800;900&display=swap)" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;800;900&display=swap" rel="stylesheet">
 
   <script>
-    /* STREAMING_CHUNK:Configuring Tailwind CSS theme */
     tailwind.config = {
       darkMode: 'class',
       theme: {
@@ -57,7 +56,6 @@
   </script>
 
   <style>
-    /* STREAMING_CHUNK:Styling page structure and UI components */
     body {
       background-color: #07090e;
       color: #f1f5f9;
@@ -115,7 +113,6 @@
 </head>
 <body class="min-h-screen font-sans flex flex-col justify-between overflow-x-hidden selection:bg-repo-green selection:text-black">
 
-  <!-- STREAMING_CHUNK:Rendering header controls -->
   <header class="border-b border-repo-border/80 bg-repo-card/80 backdrop-blur-xl sticky top-0 z-30 transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
       
@@ -164,14 +161,13 @@
         <div id="authProfileContainer" class="flex items-center pl-2 border-l border-repo-border">
           <button id="authModalBtn" onclick="openModal('authModal')" class="px-3.5 py-2 rounded-xl border border-repo-green/50 bg-repo-green/10 hover:bg-repo-green/20 text-repo-green text-xs sm:text-sm font-orbitron font-bold flex items-center gap-2 transition-all shadow-sm">
             <i class="fas fa-user-tag"></i>
-            <span id="userStatusText">Нікнейм</span>
+            <span id="userStatusText">Хлібчик</span>
           </button>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- STREAMING_CHUNK:Rendering main container layout -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow flex flex-col justify-center gap-6">
 
     <!-- MODE FILTER BAR -->
@@ -598,7 +594,7 @@
           <label class="block text-xs text-gray-400 font-orbitron mb-1.5">Ваш Нікнейм / Позивний:</label>
           <div class="relative">
             <i class="fas fa-user absolute left-3.5 top-3 text-repo-green text-xs"></i>
-            <input type="text" id="userNicknameInput" required minlength="2" maxlength="20" placeholder="Наприклад: Ghost_Rider" class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-green text-white text-xs font-orbitron font-semibold focus:outline-none">
+            <input type="text" id="userNicknameInput" required minlength="2" maxlength="20" placeholder="Наприклад: Хлібчик" class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-green text-white text-xs font-orbitron font-semibold focus:outline-none">
           </div>
         </div>
 
@@ -619,7 +615,6 @@
     </div>
   </div>
 
-  <!-- STREAMING_CHUNK:Rendering GitHub API settings modal -->
   <!-- MODAL 6: JSON ASSIGNMENTS & GITHUB LOG MODAL -->
   <div id="jsonLogModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="bg-repo-card border border-repo-purple/50 rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col p-6 shadow-neon-purple relative">
@@ -711,24 +706,22 @@
     </div>
   </footer>
 
-  <!-- FIREBASE MODULE & APPLICATION LOGIC -->
+  <!-- APPLICATION LOGIC -->
   <script type="module">
-    /* STREAMING_CHUNK:Initializing application modules and GitHub REST API integration */
-    import { initializeApp } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js)";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { 
       getAuth, 
       signInAnonymously, 
       signInWithCustomToken, 
       onAuthStateChanged 
-    } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js)";
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { 
       getFirestore, 
       doc, 
       getDoc, 
       setDoc 
-    } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js)";
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    // Global variables & Config
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'repo-wheel-app';
     const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
       apiKey: "AIzaSyDummyKeyForLocalFallbackOnly12345",
@@ -742,7 +735,6 @@
     let app, auth, db;
     let currentUser = null;
 
-    // Keys for local persistence across reloads / GitHub Pages
     const LOCAL_KEY_TASKS = 'repo_wheel_tasks_v7';
     const LOCAL_KEY_ACCEPTED = 'repo_wheel_accepted_v7';
     const LOCAL_KEY_HISTORY = 'repo_wheel_history_v7';
@@ -750,7 +742,7 @@
     const LOCAL_KEY_USER_JSON_LOG = 'repo_wheel_user_json_log_v1';
     const LOCAL_KEY_GITHUB_CREDS = 'repo_wheel_github_creds_v1';
 
-    window.userNickname = localStorage.getItem('repo_user_nickname') || 'Гравець';
+    window.userNickname = localStorage.getItem('repo_user_nickname') || 'Хлібчик';
     window.userAssignmentsJson = [];
     window.githubCreds = {
       owner: '',
@@ -767,7 +759,6 @@
       console.warn("Firebase initialization error:", err);
     }
 
-    // EXPANDED DEFAULT CHALLENGES DATABASE
     const DEFAULT_TASKS = [
       {
         id: '1',
@@ -945,7 +936,6 @@
     window.currentModeFilter = 'all';
     window.expandedCardId = null;
 
-    // Explicit Window Modal Helper Binding
     window.openModal = function(id) {
       const m = document.getElementById(id);
       if (m) {
@@ -960,7 +950,6 @@
       }
     };
 
-    // GitHub Creds Configuration Helpers
     window.toggleGithubConfigForm = function() {
       const form = document.getElementById('ghConfigForm');
       if (form) form.classList.toggle('hidden');
@@ -1012,7 +1001,6 @@
       alert('Налаштування GitHub успішно збережено!');
     };
 
-    // GitHub API Push Function
     async function commitJsonToGithubRepo(dataArray) {
       const { owner, repo, token, path } = window.githubCreds;
       if (!owner || !repo || !token) {
@@ -1020,14 +1008,11 @@
         return;
       }
 
-      const apiUrl = `[https://api.github.com/repos/$](https://api.github.com/repos/$){owner}/${repo}/contents/${path}`;
+      const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
       const jsonContent = JSON.stringify(dataArray, null, 2);
-      
-      // UTF-8 to Base64 safely
       const base64Content = btoa(unescape(encodeURIComponent(jsonContent)));
 
       try {
-        // 1. Get current SHA if file exists
         let currentSha = null;
         const getRes = await fetch(apiUrl, {
           headers: {
@@ -1041,7 +1026,6 @@
           currentSha = fileData.sha;
         }
 
-        // 2. Put file with commit message
         const commitBody = {
           message: `Update challengeAssignments.json via R.E.P.O. Wheel (${new Date().toLocaleString()})`,
           content: base64Content,
@@ -1089,9 +1073,7 @@
       alert('Запит на відправку JSON у GitHub виконано!');
     };
 
-    // Load Local/Cloud Data
     window.initData = function() {
-      // Load tasks
       const savedTasks = localStorage.getItem(LOCAL_KEY_TASKS);
       if (savedTasks) {
         try {
@@ -1108,7 +1090,6 @@
         window.tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
       }
 
-      // Load accepted
       const savedAccepted = localStorage.getItem(LOCAL_KEY_ACCEPTED);
       if (savedAccepted) {
         try {
@@ -1118,7 +1099,6 @@
         }
       }
 
-      // Load JSON assignments
       const savedJsonLog = localStorage.getItem(LOCAL_KEY_USER_JSON_LOG);
       if (savedJsonLog) {
         try {
@@ -1128,7 +1108,6 @@
         }
       }
 
-      // Load history
       const savedHistory = localStorage.getItem(LOCAL_KEY_HISTORY);
       if (savedHistory) {
         try {
@@ -1138,13 +1117,11 @@
         }
       }
 
-      // Load completed count
       const savedCompleted = localStorage.getItem(LOCAL_KEY_COMPLETED);
       if (savedCompleted !== null) {
         window.completedCount = parseInt(savedCompleted, 10) || 0;
       }
 
-      // Mute setting
       const savedMute = localStorage.getItem('repo_wheel_sound_muted');
       if (savedMute !== null) {
         window.isSoundMuted = JSON.parse(savedMute);
@@ -1202,10 +1179,8 @@
       renderJsonAssignmentsList();
       renderJsonModalLog();
 
-      // Commit directly to GitHub
       commitJsonToGithubRepo(window.userAssignmentsJson);
 
-      // Sync to Firestore
       if (currentUser && db) {
         try {
           const userDoc = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'userWheelData');
@@ -1224,7 +1199,6 @@
       }
     };
 
-    // Firebase Auth Initialization & Listeners
     async function initFirebaseAuth() {
       if (!auth) return;
 
@@ -1269,7 +1243,6 @@
       });
     }
 
-    // Audio Synthesizer
     let audioCtx = null;
     function getAudioContext() {
       if (!audioCtx) {
@@ -1335,7 +1308,6 @@
       } catch (e) {}
     }
 
-    // Canvas Wheel Setup
     const canvas = document.getElementById('wheelCanvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
     let currentAngle = 0;
@@ -1463,7 +1435,6 @@
         ctx.restore();
       });
 
-      // Outer Pins Glow
       const totalPins = activeTasks.length;
       for (let i = 0; i < totalPins; i++) {
         const pinAngle = currentAngle + i * sliceAngle;
@@ -1483,7 +1454,6 @@
         ctx.restore();
       }
 
-      // Outer Border Ring
       ctx.save();
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
@@ -1493,7 +1463,6 @@
       ctx.restore();
     }
 
-    // Spin Logic
     let lastPinIndex = -1;
 
     window.spinWheel = function() {
@@ -1573,7 +1542,6 @@
       }
     }
 
-    // Modal Results Logic
     function showResultModal(task) {
       document.getElementById('modalTaskTitle').innerText = task.title;
       document.getElementById('modalTaskDesc').innerText = task.desc;
@@ -1628,7 +1596,7 @@
       if (selectedTask) {
         const assignedItem = {
           assignmentId: 'assign_' + Date.now(),
-          userNickname: window.userNickname || 'Гравець',
+          userNickname: window.userNickname || 'Хлібчик',
           challengeId: selectedTask.id,
           challengeTitle: selectedTask.title,
           type: selectedTask.type,
@@ -1642,11 +1610,10 @@
 
         window.acceptedTasks.unshift({
           ...selectedTask,
-          assignedUser: window.userNickname || 'Гравець',
+          assignedUser: window.userNickname || 'Хлібчик',
           acceptedTime: assignedItem.assignedAtTime
         });
 
-        // Add to persistent JSON log
         window.userAssignmentsJson.unshift(assignedItem);
         renderActiveAcceptedList();
         renderJsonAssignmentsList();
@@ -1742,7 +1709,7 @@
           
           <div class="flex items-center justify-between pt-1 border-t border-repo-border/50 text-[11px]">
             <span class="px-2 py-0.5 rounded bg-repo-green/10 border border-repo-green/30 text-repo-green font-orbitron font-semibold flex items-center gap-1">
-              <i class="fas fa-user text-[9px]"></i> ${t.assignedUser || 'Гравець'}
+              <i class="fas fa-user text-[9px]"></i> ${t.assignedUser || 'Хлібчик'}
             </span>
             <span class="text-gray-500 font-orbitron">${t.acceptedTime}</span>
           </div>
@@ -1894,7 +1861,6 @@
       if (tasksBadge) tasksBadge.innerText = activeTasksCount;
     }
 
-    // ACCORDION DETAILS LIST
     window.renderDetailsList = function() {
       const container = document.getElementById('detailsCardsList');
       if (!container) return;
@@ -2006,7 +1972,6 @@
       }
     };
 
-    // TASKS MANAGER LOGIC WITH TOGGLE SWITCHES
     function renderTasksList() {
       const tasksList = document.getElementById('tasksList');
       if (!tasksList) return;
@@ -2014,7 +1979,6 @@
         <div class="p-3 rounded-xl ${task.enabled ? 'bg-repo-bg/70 border-repo-border' : 'bg-repo-darker/80 border-repo-border/40 opacity-75'} border flex items-center justify-between gap-3 text-xs sm:text-sm transition-all">
           
           <div class="flex items-center gap-3 flex-grow min-w-0">
-            <!-- Toggle Switch for Soft Enable/Disable -->
             <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
               <input type="checkbox" ${task.enabled ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="sr-only peer">
               <div class="w-9 h-5 bg-repo-card border border-repo-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gray-400 after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-repo-green/30 peer-checked:border-repo-green peer-checked:after:bg-repo-green"></div>
@@ -2031,7 +1995,6 @@
             </div>
           </div>
 
-          <!-- Actions -->
           <div class="flex items-center gap-1.5 flex-shrink-0">
             <button onclick="openEditTaskModal('${task.id}')" class="text-gray-400 hover:text-repo-yellow p-1.5 transition-colors" title="Редагувати">
               <i class="fas fa-pen text-xs"></i>
@@ -2044,7 +2007,6 @@
       `).join('');
     }
 
-    // EDIT TASK FORM
     window.openEditTaskModal = function(taskId) {
       const task = window.tasks.find(t => t.id === taskId);
       if (!task) return;
@@ -2139,7 +2101,6 @@
       renderTasksList();
     };
 
-    // INITIALIZATION ON LOAD
     window.onload = function() {
       window.initData();
       setupCanvas();
@@ -2148,4 +2109,3 @@
   </script>
 </body>
 </html>
-```eof
