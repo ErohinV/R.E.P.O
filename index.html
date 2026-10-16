@@ -6,15 +6,15 @@
   <title>R.E.P.O. - Колесо Фортуни & WebCam / IRL Челенджі</title>
   
   <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
   <!-- Canvas Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="[https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js](https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js)"></script>
   <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
   <!-- Google Fonts: Orbitron & Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+  <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+  <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;800;900&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;800;900&display=swap)" rel="stylesheet">
 
   <script>
     /* STREAMING_CHUNK:Configuring Tailwind CSS theme */
@@ -115,8 +115,7 @@
 </head>
 <body class="min-h-screen font-sans flex flex-col justify-between overflow-x-hidden selection:bg-repo-green selection:text-black">
 
-  <!-- TOP HEADER -->
-  /* STREAMING_CHUNK:Rendering header controls */
+  <!-- STREAMING_CHUNK:Rendering header controls -->
   <header class="border-b border-repo-border/80 bg-repo-card/80 backdrop-blur-xl sticky top-0 z-30 transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
       
@@ -172,8 +171,7 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
-  /* STREAMING_CHUNK:Rendering main container layout */
+  <!-- STREAMING_CHUNK:Rendering main container layout -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow flex flex-col justify-center gap-6">
 
     <!-- MODE FILTER BAR -->
@@ -621,8 +619,8 @@
     </div>
   </div>
 
+  <!-- STREAMING_CHUNK:Rendering GitHub API settings modal -->
   <!-- MODAL 6: JSON ASSIGNMENTS & GITHUB LOG MODAL -->
-  /* STREAMING_CHUNK:Rendering GitHub API settings modal */
   <div id="jsonLogModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="bg-repo-card border border-repo-purple/50 rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col p-6 shadow-neon-purple relative">
       
@@ -714,21 +712,21 @@
   </footer>
 
   <!-- FIREBASE MODULE & APPLICATION LOGIC -->
-  /* STREAMING_CHUNK:Initializing application modules and GitHub REST API integration */
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    /* STREAMING_CHUNK:Initializing application modules and GitHub REST API integration */
+    import { initializeApp } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js)";
     import { 
       getAuth, 
       signInAnonymously, 
       signInWithCustomToken, 
       onAuthStateChanged 
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js)";
     import { 
       getFirestore, 
       doc, 
       getDoc, 
       setDoc 
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js)";
 
     // Global variables & Config
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'repo-wheel-app';
@@ -1022,7 +1020,7 @@
         return;
       }
 
-      const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+      const apiUrl = `[https://api.github.com/repos/$](https://api.github.com/repos/$){owner}/${repo}/contents/${path}`;
       const jsonContent = JSON.stringify(dataArray, null, 2);
       
       // UTF-8 to Base64 safely
