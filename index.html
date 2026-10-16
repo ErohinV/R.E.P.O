@@ -17,6 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;800;900&display=swap" rel="stylesheet">
 
   <script>
+    /* STREAMING_CHUNK:Configuring Tailwind CSS theme */
     tailwind.config = {
       darkMode: 'class',
       theme: {
@@ -56,6 +57,7 @@
   </script>
 
   <style>
+    /* STREAMING_CHUNK:Styling page layout and scrollbars */
     body {
       background-color: #07090e;
       color: #f1f5f9;
@@ -114,6 +116,7 @@
 <body class="min-h-screen font-sans flex flex-col justify-between overflow-x-hidden selection:bg-repo-green selection:text-black">
 
   <!-- TOP HEADER -->
+  <!-- STREAMING_CHUNK:Rendering header layout -->
   <header class="border-b border-repo-border/80 bg-repo-card/80 backdrop-blur-xl sticky top-0 z-30 transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
       
@@ -164,6 +167,7 @@
   </header>
 
   <!-- MAIN CONTENT -->
+  <!-- STREAMING_CHUNK:Rendering main application body -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow flex flex-col justify-center gap-6">
 
     <!-- MODE FILTER BAR -->
@@ -244,6 +248,7 @@
       </div>
 
       <!-- CENTER COLUMN: WHEEL OF FORTUNE -->
+      <!-- STREAMING_CHUNK:Rendering canvas wheel area -->
       <div class="lg:col-span-6 order-1 lg:order-2 flex flex-col items-center justify-center relative py-2">
         <div class="relative w-full max-w-[420px] sm:max-w-[480px] aspect-square flex items-center justify-center p-3">
           
@@ -307,6 +312,7 @@
     </div>
   </main>
 
+  <!-- STREAMING_CHUNK:Rendering application modals -->
   <!-- MODAL 1: RESULT MODAL -->
   <div id="resultModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="bg-repo-card border-2 border-repo-green rounded-2xl max-w-lg w-full p-6 sm:p-8 relative shadow-neon-green transform scale-95 transition-transform duration-300 text-center overflow-hidden" id="resultModalContent">
@@ -613,6 +619,7 @@
   </footer>
 
   <!-- FIREBASE MODULE & APPLICATION LOGIC -->
+  <!-- STREAMING_CHUNK:Initializing state and persistence module -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { 
@@ -641,6 +648,13 @@
 
     let app, auth, db;
     let currentUser = null;
+
+    // Keys for persistence across reloads / GitHub Pages
+    const LOCAL_KEY_TASKS = 'repo_wheel_tasks_v7';
+    const LOCAL_KEY_ACCEPTED = 'repo_wheel_accepted_v7';
+    const LOCAL_KEY_HISTORY = 'repo_wheel_history_v7';
+    const LOCAL_KEY_COMPLETED = 'repo_wheel_completed_v7';
+
     window.userNickname = localStorage.getItem('repo_user_nickname') || 'Гравець';
 
     try {
@@ -652,6 +666,7 @@
     }
 
     // EXPANDED DEFAULT CHALLENGES DATABASE
+    /* STREAMING_CHUNK:Defining default challenge database */
     const DEFAULT_TASKS = [
       {
         id: '1',
@@ -844,13 +859,19 @@
       }
     };
 
-    // Load Local/Cloud Data
+    // Robust Persistence Initializer
+    /* STREAMING_CHUNK:Loading state from localStorage and initializing persistence */
     window.initData = function() {
-      const savedTasks = localStorage.getItem('repo_wheel_tasks_v6');
+      // 1. Load tasks
+      const savedTasks = localStorage.getItem(LOCAL_KEY_TASKS);
       if (savedTasks) {
         try {
-          window.tasks = JSON.parse(savedTasks);
-          if (!Array.isArray(window.tasks) || window.tasks.length === 0) window.tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+          const parsed = JSON.parse(savedTasks);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            window.tasks = parsed;
+          } else {
+            window.tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+          }
         } catch (e) {
           window.tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
         }
@@ -858,6 +879,33 @@
         window.tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
       }
 
+      // 2. Load accepted tasks
+      const savedAccepted = localStorage.getItem(LOCAL_KEY_ACCEPTED);
+      if (savedAccepted) {
+        try {
+          window.acceptedTasks = JSON.parse(savedAccepted) || [];
+        } catch (e) {
+          window.acceptedTasks = [];
+        }
+      }
+
+      // 3. Load game history
+      const savedHistory = localStorage.getItem(LOCAL_KEY_HISTORY);
+      if (savedHistory) {
+        try {
+          window.gameHistory = JSON.parse(savedHistory) || [];
+        } catch (e) {
+          window.gameHistory = [];
+        }
+      }
+
+      // 4. Load completed count
+      const savedCompleted = localStorage.getItem(LOCAL_KEY_COMPLETED);
+      if (savedCompleted !== null) {
+        window.completedCount = parseInt(savedCompleted, 10) || 0;
+      }
+
+      // 5. Mute setting
       const savedMute = localStorage.getItem('repo_wheel_sound_muted');
       if (savedMute !== null) {
         window.isSoundMuted = JSON.parse(savedMute);
@@ -868,6 +916,8 @@
       updateStats();
       renderTasksList();
       renderDetailsList();
+      renderHistory();
+      renderActiveAcceptedList();
     };
 
     function updateUserNicknameUI() {
@@ -898,7 +948,12 @@
     };
 
     window.saveTasks = function() {
-      localStorage.setItem('repo_wheel_tasks_v6', JSON.stringify(window.tasks));
+      // Save locally to localStorage so refreshing GitHub Pages NEVER loses state
+      localStorage.setItem(LOCAL_KEY_TASKS, JSON.stringify(window.tasks));
+      localStorage.setItem(LOCAL_KEY_ACCEPTED, JSON.stringify(window.acceptedTasks));
+      localStorage.setItem(LOCAL_KEY_HISTORY, JSON.stringify(window.gameHistory));
+      localStorage.setItem(LOCAL_KEY_COMPLETED, window.completedCount.toString());
+
       updateStats();
       drawWheel();
       renderDetailsList();
@@ -909,6 +964,8 @@
           const userDoc = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'userWheelData');
           setDoc(userDoc, {
             tasks: window.tasks,
+            acceptedTasks: window.acceptedTasks,
+            gameHistory: window.gameHistory,
             completedCount: window.completedCount,
             nickname: window.userNickname,
             updatedAt: new Date().toISOString()
@@ -950,12 +1007,12 @@
               }
               if (data.tasks && Array.isArray(data.tasks)) {
                 window.tasks = data.tasks;
+                if (Array.isArray(data.acceptedTasks)) window.acceptedTasks = data.acceptedTasks;
+                if (Array.isArray(data.gameHistory)) window.gameHistory = data.gameHistory;
                 window.completedCount = data.completedCount || 0;
-                localStorage.setItem('repo_wheel_tasks_v6', JSON.stringify(window.tasks));
-                updateStats();
-                drawWheel();
-                renderTasksList();
-                renderDetailsList();
+                
+                // Keep local mirror updated
+                window.saveTasks();
               }
             }
           } catch (err) {
@@ -1032,6 +1089,7 @@
     }
 
     // Canvas Wheel Setup
+    /* STREAMING_CHUNK:Setting up canvas wheel renderer */
     const canvas = document.getElementById('wheelCanvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
     let currentAngle = 0;
@@ -1190,6 +1248,7 @@
     }
 
     // Spin Logic
+    /* STREAMING_CHUNK:Implementing spin physics and animation loop */
     let lastPinIndex = -1;
 
     window.spinWheel = function() {
@@ -1371,18 +1430,19 @@
 
       if (window.gameHistory.length > 15) window.gameHistory.pop();
       renderHistory();
+      window.saveTasks();
     }
 
     function renderHistory() {
       const historyList = document.getElementById('historyList');
       if (!historyList) return;
-      if (window.gameHistory.length === 0) {
+      if (!window.gameHistory || window.gameHistory.length === 0) {
         historyList.innerHTML = `<div class="text-center text-gray-500 py-12 italic">Історія порожня. Покрутіть колесо!</div>`;
         return;
       }
 
       historyList.innerHTML = window.gameHistory.map((item) => `
-        <div class="p-2.5 rounded-xl bg-repo-bg/80 border border-repo-border flex items-center justify-between text-xs hover:border-repo-yellow/40 transition-all cursor-pointer" onclick="openSingleChallengeDetails('${item.taskRef.id}')">
+        <div class="p-2.5 rounded-xl bg-repo-bg/80 border border-repo-border flex items-center justify-between text-xs hover:border-repo-yellow/40 transition-all cursor-pointer" onclick="openSingleChallengeDetails('${item.taskRef ? item.taskRef.id : ''}')">
           <div class="flex items-center gap-2 min-w-0">
             <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${item.color}"></span>
             <span class="font-medium text-gray-200 truncate">${item.title}</span>
@@ -1398,10 +1458,10 @@
     function renderActiveAcceptedList() {
       const activeList = document.getElementById('activeAcceptedList');
       const badge = document.getElementById('activeCountBadge');
-      if (badge) badge.innerText = window.acceptedTasks.length;
+      if (badge) badge.innerText = window.acceptedTasks ? window.acceptedTasks.length : 0;
       if (!activeList) return;
 
-      if (window.acceptedTasks.length === 0) {
+      if (!window.acceptedTasks || window.acceptedTasks.length === 0) {
         activeList.innerHTML = `<div class="text-center text-gray-500 py-12 italic">Немає активних прийнятих челенджів.</div>`;
         return;
       }
@@ -1429,8 +1489,11 @@
     }
 
     window.removeAcceptedTask = function(index) {
-      window.acceptedTasks.splice(index, 1);
-      renderActiveAcceptedList();
+      if (window.acceptedTasks) {
+        window.acceptedTasks.splice(index, 1);
+        renderActiveAcceptedList();
+        window.saveTasks();
+      }
     };
 
     window.switchRightPanel = function(panel) {
@@ -1456,6 +1519,7 @@
     window.clearHistory = function() {
       window.gameHistory = [];
       renderHistory();
+      window.saveTasks();
     };
 
     function updateStats() {
@@ -1476,6 +1540,7 @@
     }
 
     // ACCORDION DETAILS LIST
+    /* STREAMING_CHUNK:Rendering rules book and accordion components */
     window.renderDetailsList = function() {
       const container = document.getElementById('detailsCardsList');
       if (!container) return;
@@ -1573,6 +1638,7 @@
     };
 
     window.openSingleChallengeDetails = function(id) {
+      if (!id) return;
       window.expandedCardId = id;
       window.renderDetailsList();
       window.openModal('viewDetailsModal');
@@ -1587,6 +1653,7 @@
     };
 
     // TASKS MANAGER LOGIC WITH TOGGLE SWITCHES
+    /* STREAMING_CHUNK:Rendering task manager controls */
     function renderTasksList() {
       const tasksList = document.getElementById('tasksList');
       if (!tasksList) return;
@@ -1728,3 +1795,4 @@
   </script>
 </body>
 </html>
+```eof
