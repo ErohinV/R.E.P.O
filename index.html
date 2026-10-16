@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="uk" class="h-full dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>R.E.P.O. - Колесо Фортуни & WebCam / IRL Челенджі</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Orbitron & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            repo: {
+              bg: '#07090e',
+              card: '#0f141f',
+              cardLight: '#161e2e',
+              border: '#1e293b',
+              borderGlow: '#2e3d55',
+              green: '#00ff66',
+              greenDark: '#00b347',
+              orange: '#ff6600',
+              yellow: '#ffcc00',
+              cyan: '#00f0ff',
+              magenta: '#ff0055',
+              purple: '#b033ff',
+              darker: '#030508'
+            }
+          },
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            sans: ['Inter', 'sans-serif']
+          },
+          boxShadow: {
+            'neon-green': '0 0 25px rgba(0, 255, 102, 0.35)',
+            'neon-cyan': '0 0 25px rgba(0, 240, 255, 0.35)',
+            'neon-magenta': '0 0 25px rgba(255, 0, 85, 0.35)',
+            'neon-yellow': '0 0 25px rgba(255, 204, 0, 0.35)',
+            'neon-purple': '0 0 25px rgba(176, 51, 255, 0.35)',
+            'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #07090e;
+      color: #f1f5f9;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(0, 255, 102, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 85% 20%, rgba(0, 240, 255, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 15% 85%, rgba(255, 0, 85, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 50% 100%, rgba(176, 51, 255, 0.05) 0%, transparent 50%),
+        linear-gradient(to bottom, rgba(7, 9, 14, 0.96), rgba(3, 5, 8, 0.99));
+      background-attachment: fixed;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #07090e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00ff66;
+    }
+
+    .glass-panel {
+      background: rgba(15, 20, 31, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    @keyframes pulse-btn {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 255, 102, 0.5); }
+      50% { transform: scale(1.04); box-shadow: 0 0 35px rgba(0, 255, 102, 0.85); }
+    }
+
+    .spin-btn-active {
+      animation: pulse-btn 2.2s infinite ease-in-out;
+    }
+
+    @keyframes live-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .live-dot {
+      animation: live-pulse 1.4s infinite ease-in-out;
+    }
+
+    .clip-pointer {
+      clip-path: polygon(100% 0, 0 0, 50% 100%);
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans flex flex-col justify-between overflow-x-hidden selection:bg-repo-green selection:text-black">
+
+  <!-- TOP HEADER -->
+  <header class="border-b border-repo-border/80 bg-repo-card/80 backdrop-blur-xl sticky top-0 z-30 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
+      
+      <!-- Logo & Title -->
+      <div class="flex items-center space-x-3.5">
+        <div class="relative group cursor-pointer" onclick="window.location.reload()">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-repo-green to-repo-cyan rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-300"></div>
+          <div class="relative w-11 h-11 rounded-xl bg-repo-card border border-repo-green/50 flex items-center justify-center text-repo-green text-2xl font-orbitron font-black shadow-neon-green">
+            R
+          </div>
+        </div>
+        <div>
+          <h1 class="font-orbitron font-black text-xl sm:text-2xl text-white tracking-wider flex items-center gap-2">
+            R.E.P.O. <span class="text-repo-green text-xs font-semibold px-2.5 py-0.5 rounded-full border border-repo-green/40 bg-repo-green/10 flex items-center gap-1.5 shadow-sm">
+              <i class="fas fa-video text-repo-magenta text-xs live-dot"></i> WEBCAM EDITION
+            </span>
+          </h1>
+          <p class="text-xs text-gray-400 hidden sm:block">Генератор WebCam та IRL Челенджі для стрімів і командної гри</p>
+        </div>
+      </div>
+
+      <!-- Header Action Controls & Simplified Nickname Auth -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <button id="soundToggleBtn" onclick="toggleSound()" class="p-2.5 rounded-xl border border-repo-border bg-repo-cardLight/70 hover:border-repo-green/60 text-gray-300 hover:text-repo-green transition-all duration-200" title="Перемикач звуку">
+          <i id="soundIcon" class="fas fa-volume-up text-repo-green text-sm sm:text-base"></i>
+        </button>
+        
+        <button onclick="openModal('viewDetailsModal')" class="px-3 py-2 rounded-xl border border-repo-border bg-repo-cardLight/70 hover:border-repo-yellow/60 text-xs sm:text-sm font-semibold flex items-center gap-2 text-gray-200 hover:text-repo-yellow transition-all duration-200 shadow-sm">
+          <i class="fas fa-book-open text-repo-yellow"></i>
+          <span class="hidden md:inline">Умови челенджів</span>
+        </button>
+
+        <button onclick="openModal('tasksModal')" class="px-3 py-2 rounded-xl border border-repo-border bg-repo-cardLight/70 hover:border-repo-cyan/60 text-xs sm:text-sm font-semibold flex items-center gap-2 text-gray-200 hover:text-repo-cyan transition-all duration-200 shadow-sm relative">
+          <i class="fas fa-sliders text-repo-cyan"></i>
+          <span class="hidden sm:inline">Керування</span>
+          <span id="tasksBadge" class="bg-repo-cyan/20 text-repo-cyan text-[11px] font-orbitron font-bold px-2 py-0.5 rounded-full border border-repo-cyan/40">0</span>
+        </button>
+
+        <!-- Profile Nickname Button -->
+        <div id="authProfileContainer" class="flex items-center pl-2 border-l border-repo-border">
+          <button id="authModalBtn" onclick="openModal('authModal')" class="px-3.5 py-2 rounded-xl border border-repo-green/50 bg-repo-green/10 hover:bg-repo-green/20 text-repo-green text-xs sm:text-sm font-orbitron font-bold flex items-center gap-2 transition-all shadow-sm">
+            <i class="fas fa-user-tag"></i>
+            <span id="userStatusText">Нікнейм</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow flex flex-col justify-center gap-6">
+
+    <!-- MODE FILTER BAR -->
+    <div class="p-2 sm:p-2.5 rounded-2xl glass-panel border border-repo-border flex flex-wrap items-center justify-between gap-3 max-w-4xl mx-auto w-full shadow-lg">
+      <div class="flex items-center gap-2 px-3 text-xs font-orbitron font-bold text-gray-400 uppercase tracking-widest">
+        <i class="fas fa-filter text-repo-green"></i> Режим Колеса:
+      </div>
+      <div class="flex flex-wrap gap-2 flex-grow sm:flex-grow-0 justify-center">
+        <button id="filterBtnAll" onclick="setModeFilter('all')" class="px-4 py-2 rounded-xl text-xs font-orbitron font-bold transition-all border border-repo-green bg-repo-green text-black shadow-neon-green">
+          🔥 Все підряд (Змішаний)
+        </button>
+        <button id="filterBtnWebcam" onclick="setModeFilter('webcam')" class="px-4 py-2 rounded-xl text-xs font-orbitron font-bold transition-all border border-repo-border bg-repo-cardLight/80 text-gray-300 hover:text-repo-magenta hover:border-repo-magenta/60">
+          🎥 Тільки WebCam / IRL
+        </button>
+        <button id="filterBtnGame" onclick="setModeFilter('in_game')" class="px-4 py-2 rounded-xl text-xs font-orbitron font-bold transition-all border border-repo-border bg-repo-cardLight/80 text-gray-300 hover:text-repo-cyan hover:border-repo-cyan/60">
+          🎮 Тільки Внутрішньоігрове
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN GRID CONTAINER -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+      
+      <!-- LEFT COLUMN: STATUS & INFO -->
+      <div class="lg:col-span-3 order-2 lg:order-1 flex flex-col gap-5">
+        
+        <!-- SYSTEM STATUS PANEL -->
+        <div class="p-5 rounded-2xl glass-panel relative overflow-hidden shadow-lg border border-repo-border">
+          <div class="absolute -right-8 -bottom-8 w-28 h-28 bg-repo-green/10 rounded-full blur-2xl pointer-events-none"></div>
+          <h3 class="font-orbitron font-bold text-xs text-gray-400 uppercase tracking-widest mb-3 flex items-center justify-between">
+            <span class="flex items-center gap-2"><i class="fas fa-microchip text-repo-green"></i> Статус Системи</span>
+            <span class="w-2 h-2 rounded-full bg-repo-green animate-pulse"></span>
+          </h3>
+          <div class="space-y-3 text-xs sm:text-sm">
+            <div class="flex justify-between items-center py-2 border-b border-repo-border/60">
+              <span class="text-gray-400">Всього челенджів:</span>
+              <span id="statTotal" class="font-orbitron font-bold text-white text-base">0</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-repo-border/60">
+              <span class="text-gray-400">Активних у колесі:</span>
+              <span id="statActive" class="font-orbitron font-bold text-repo-green text-base">0</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-repo-border/60">
+              <span class="text-gray-400">Викреслено / Вимкнено:</span>
+              <span id="statDisabled" class="font-orbitron font-bold text-repo-orange text-base">0</span>
+            </div>
+            <div class="flex justify-between items-center py-2">
+              <span class="text-gray-400">Прийнято за сесію:</span>
+              <span id="statCompleted" class="font-orbitron font-bold text-repo-cyan text-base">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- WEBCAM RULES PANEL -->
+        <div class="p-5 rounded-2xl glass-panel shadow-lg border border-repo-border text-xs leading-relaxed flex flex-col gap-3">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-lg bg-repo-magenta/10 border border-repo-magenta/40 flex items-center justify-center text-repo-magenta">
+              <i class="fas fa-video"></i>
+            </div>
+            <h4 class="font-orbitron font-bold text-sm text-white">Правила WebCam</h4>
+          </div>
+          <p class="text-gray-300">
+            Усі WebCam челенджі вимагають підтвердження та виконання перед веб-камерою в реальному часі!
+          </p>
+          
+          <button onclick="openModal('viewDetailsModal')" class="mt-2 w-full py-2.5 px-3 rounded-xl border border-repo-yellow/40 bg-repo-yellow/10 hover:bg-repo-yellow/20 text-repo-yellow text-xs font-orbitron font-bold transition-all flex items-center justify-center gap-2 shadow-sm">
+            <i class="fas fa-book-open"></i> Книга умов челенджів
+          </button>
+
+          <div class="pt-3 border-t border-repo-border/60 flex justify-between items-center text-[11px] text-gray-400">
+            <span>Режим: <strong id="currentModeLabel" class="text-repo-green font-orbitron">Все підряд</strong></span>
+            <button onclick="restoreExcludedTasks()" class="text-repo-cyan hover:underline transition-all flex items-center gap-1 font-orbitron" title="Увімкнути всі викреслені завдання">
+              <i class="fas fa-rotate-left"></i> Відновити
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CENTER COLUMN: WHEEL OF FORTUNE -->
+      <div class="lg:col-span-6 order-1 lg:order-2 flex flex-col items-center justify-center relative py-2">
+        <div class="relative w-full max-w-[420px] sm:max-w-[480px] aspect-square flex items-center justify-center p-3">
+          
+          <!-- Outer glowing rings -->
+          <div class="absolute inset-0 rounded-full border-2 border-repo-green/20 animate-pulse pointer-events-none"></div>
+          <div class="absolute inset-3 rounded-full border border-repo-cyan/20 pointer-events-none"></div>
+
+          <!-- POINTER / ARROW -->
+          <div class="absolute top-0 z-20 -translate-y-2 flex flex-col items-center pointer-events-none drop-shadow-[0_8px_12px_rgba(0,0,0,0.8)]">
+            <div class="w-9 h-11 bg-gradient-to-b from-repo-orange via-red-500 to-repo-magenta clip-pointer border-t border-white/40 flex items-center justify-center">
+              <i class="fas fa-caret-down text-white text-2xl mt-[-8px]"></i>
+            </div>
+          </div>
+
+          <!-- CANVAS WHEEL -->
+          <canvas id="wheelCanvas" class="w-full h-full cursor-pointer rounded-full transition-transform duration-300 hover:scale-[1.008] shadow-2xl"></canvas>
+
+          <!-- SPIN BUTTON -->
+          <button id="spinBtn" onclick="spinWheel()" class="absolute z-10 w-22 h-22 sm:w-28 sm:h-28 rounded-full bg-repo-card/90 border-4 border-repo-green text-repo-green hover:bg-repo-green hover:text-black font-orbitron font-black text-xs sm:text-sm tracking-widest transition-all duration-300 flex flex-col items-center justify-center shadow-neon-green spin-btn-active active:scale-95 group backdrop-blur-md">
+            <i class="fas fa-play text-xs sm:text-sm mb-1 group-hover:scale-125 transition-transform"></i>
+            <span>КРУТИТИ</span>
+          </button>
+        </div>
+
+        <p class="mt-4 text-xs sm:text-sm text-gray-400 font-orbitron tracking-wide text-center flex items-center gap-2">
+          <span>Клацніть</span> <span class="px-2 py-0.5 rounded bg-repo-green/10 border border-repo-green/40 text-repo-green font-bold">КРУТИТИ</span> <span>або торкніться колеса</span>
+        </p>
+      </div>
+
+      <!-- RIGHT COLUMN: HISTORY & ACCEPTED TASKS -->
+      <div class="lg:col-span-3 order-3 flex flex-col gap-4">
+        <div class="p-5 rounded-2xl glass-panel border border-repo-border flex flex-col h-[400px] shadow-lg">
+          
+          <!-- Tabs Header -->
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-repo-border">
+            <div class="flex gap-3">
+              <button id="tabHistoryBtn" onclick="switchRightPanel('history')" class="font-orbitron font-bold text-xs uppercase tracking-wider text-repo-yellow border-b-2 border-repo-yellow pb-1">
+                <i class="fas fa-history mr-1"></i> Історія
+              </button>
+              <button id="tabActiveBtn" onclick="switchRightPanel('active')" class="font-orbitron font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white pb-1">
+                <i class="fas fa-check-circle mr-1"></i> Прийняті (<span id="activeCountBadge">0</span>)
+              </button>
+            </div>
+            <button onclick="clearHistory()" class="text-xs text-gray-500 hover:text-repo-magenta transition-colors p-1" title="Очистити історію">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+
+          <!-- History Tab List -->
+          <div id="historyList" class="space-y-2 overflow-y-auto pr-1 flex-grow text-xs sm:text-sm">
+            <div class="text-center text-gray-500 py-12 italic">Історія порожня. Покрутіть колесо!</div>
+          </div>
+
+          <!-- Accepted Tasks Tab List -->
+          <div id="activeAcceptedList" class="space-y-2 overflow-y-auto pr-1 flex-grow text-xs sm:text-sm hidden">
+            <div class="text-center text-gray-500 py-12 italic">Немає активних прийнятих челенджів.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL 1: RESULT MODAL -->
+  <div id="resultModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-repo-card border-2 border-repo-green rounded-2xl max-w-lg w-full p-6 sm:p-8 relative shadow-neon-green transform scale-95 transition-transform duration-300 text-center overflow-hidden" id="resultModalContent">
+      
+      <div class="w-16 h-16 rounded-2xl bg-repo-green/10 border border-repo-green/40 text-repo-green text-3xl flex items-center justify-center mx-auto mb-4 shadow-neon-green animate-bounce">
+        <i class="fas fa-trophy" id="modalHeaderIcon"></i>
+      </div>
+
+      <div id="modalCategoryBadge" class="inline-block mb-2"></div>
+
+      <h2 id="modalTaskTitle" class="font-orbitron font-black text-xl sm:text-2xl text-white my-2 tracking-wide text-balance">
+        Назва завдання
+      </h2>
+
+      <!-- WebCam Action Box -->
+      <div id="modalIrlBox" class="hidden my-3 p-3.5 rounded-xl bg-repo-magenta/10 border border-repo-magenta/40 text-left">
+        <div class="text-repo-magenta font-orbitron font-bold text-xs flex items-center gap-1.5 mb-1">
+          <i class="fas fa-video"></i> 🎥 IRL / ВЕБКАМ ДІЯ (Перед камерою):
+        </div>
+        <p id="modalIrlDesc" class="text-xs sm:text-sm text-gray-100 font-semibold"></p>
+      </div>
+
+      <!-- Main Game Rule Box -->
+      <div class="bg-repo-bg/80 border border-repo-border rounded-xl p-4 my-3 text-gray-200 text-xs sm:text-sm leading-relaxed text-left max-h-[140px] overflow-y-auto">
+        <div class="text-repo-cyan font-orbitron font-bold text-xs flex items-center gap-1.5 mb-1">
+          <i class="fas fa-gamepad"></i> 🎮 ІГРОВЕ ПРАВИЛО:
+        </div>
+        <p id="modalTaskDesc" class="text-balance font-medium text-gray-300">
+          Опис завдання...
+        </p>
+      </div>
+
+      <!-- Extended Details -->
+      <div id="modalDeepDetailsContainer" class="hidden mb-4 text-left bg-repo-darker/90 border border-repo-yellow/30 rounded-xl p-3 text-xs space-y-2">
+        <div class="text-repo-yellow font-bold flex items-center gap-1.5 font-orbitron">
+          <i class="fas fa-shield-halved"></i> ШТРАФИ ЗА ПОРУШЕННЯ:
+        </div>
+        <p id="modalTaskPenalties" class="text-gray-300 leading-relaxed"></p>
+        <div class="text-repo-cyan font-bold flex items-center gap-1.5 font-orbitron pt-1">
+          <i class="fas fa-lightbulb"></i> ПОРАДА З ВИКОНАННЯ:
+        </div>
+        <p id="modalTaskTips" class="text-gray-300 leading-relaxed"></p>
+      </div>
+
+      <button id="toggleModalDeepBtn" onclick="toggleResultModalDeepDetails()" class="mb-5 text-xs font-orbitron text-repo-yellow hover:text-amber-300 flex items-center justify-center gap-1.5 mx-auto underline transition-colors">
+        <i class="fas fa-info-circle"></i> <span>Показати розширені умови та штрафи</span>
+      </button>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-2.5">
+        <button onclick="acceptTask()" class="flex-1 py-3 px-4 rounded-xl bg-repo-green text-black font-orbitron font-bold hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 shadow-lg shadow-repo-green/20">
+          <i class="fas fa-check"></i>
+          <span>Прийняти челендж</span>
+        </button>
+
+        <button onclick="excludeAndCloseTask()" class="py-3 px-4 rounded-xl border border-repo-orange/60 text-repo-orange hover:bg-repo-orange/10 font-orbitron font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2" title="Вимкнути/викреслити це завдання з колеса">
+          <i class="fas fa-eye-slash"></i>
+          <span>Викреслити з колеса</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL 2: VIEW DETAILS (ACCORDION BOOK) -->
+  <div id="viewDetailsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-repo-card border border-repo-border rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col p-6 shadow-2xl">
+      
+      <div class="flex items-center justify-between pb-4 border-b border-repo-border">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-repo-yellow/10 border border-repo-yellow/30 flex items-center justify-center text-repo-yellow">
+            <i class="fas fa-book-open text-lg"></i>
+          </div>
+          <div>
+            <h2 class="font-orbitron font-bold text-lg text-white">Книга умов челенджів R.E.P.O.</h2>
+            <p class="text-xs text-gray-400">Перегляд усіх доступних правил та умов</p>
+          </div>
+        </div>
+        <button onclick="closeModal('viewDetailsModal')" class="text-gray-400 hover:text-white p-2 text-xl">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="py-3 border-b border-repo-border flex gap-3">
+        <div class="relative flex-grow">
+          <i class="fas fa-search absolute left-3.5 top-3 text-gray-500 text-xs"></i>
+          <input type="text" id="searchChallengeInput" oninput="renderDetailsList()" placeholder="Пошук челенджу..." class="w-full pl-9 pr-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-yellow text-white text-xs focus:outline-none">
+        </div>
+      </div>
+
+      <div id="detailsCardsList" class="flex-grow overflow-y-auto space-y-3 py-4 pr-1"></div>
+
+      <div class="pt-4 border-t border-repo-border flex justify-between items-center text-xs text-gray-400">
+        <span>Натисніть на картку для відкриття розширених деталей</span>
+        <button onclick="closeModal('viewDetailsModal')" class="px-5 py-2.5 rounded-xl bg-repo-cardLight border border-repo-border text-white font-orbitron text-xs hover:border-repo-yellow transition-all">
+          Закрити
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL 3: TASK MANAGER & SETTINGS -->
+  <div id="tasksModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-repo-card border border-repo-border rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col p-6 shadow-2xl">
+      
+      <div class="flex items-center justify-between pb-4 border-b border-repo-border">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-repo-cyan/10 border border-repo-cyan/30 flex items-center justify-center text-repo-cyan">
+            <i class="fas fa-sliders text-lg"></i>
+          </div>
+          <div>
+            <h2 class="font-orbitron font-bold text-lg text-white">Керування секторами колеса</h2>
+            <p class="text-xs text-gray-400">Увімкнення, викреслення та додавання нових челенджів</p>
+          </div>
+        </div>
+        <button onclick="closeModal('tasksModal')" class="text-gray-400 hover:text-white p-2 text-xl">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Add New Task Form -->
+      <form id="addTaskForm" onsubmit="handleAddTask(event)" class="py-4 border-b border-repo-border flex flex-col gap-2.5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <input type="text" id="newTaskTitle" required placeholder="Назва челенджу..." class="px-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-cyan text-white text-xs focus:outline-none">
+          <select id="newTaskType" class="px-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-cyan text-white text-xs focus:outline-none">
+            <option value="webcam">🎥 WebCam / IRL Челендж</option>
+            <option value="in_game">🎮 Внутрішньоігрове обмеження</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <input type="text" id="newTaskIrl" placeholder="🎥 IRL Дія перед вебкою (якщо є)..." class="px-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-cyan text-white text-xs focus:outline-none">
+          <input type="text" id="newTaskDesc" required placeholder="🎮 Ігрове правило..." class="px-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-cyan text-white text-xs focus:outline-none">
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <input type="text" id="newTaskPenalties" placeholder="Штрафи..." class="px-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-cyan text-white text-xs focus:outline-none">
+          <input type="text" id="newTaskTips" placeholder="Порада..." class="px-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-cyan text-white text-xs focus:outline-none">
+        </div>
+        <div class="flex justify-between items-center pt-1">
+          <div class="flex items-center gap-2">
+            <label class="text-xs text-gray-400">Колір:</label>
+            <input type="color" id="newTaskColor" value="#ff0055" class="w-7 h-7 rounded border-0 bg-transparent cursor-pointer">
+          </div>
+          <button type="submit" class="px-4 py-2 rounded-xl bg-repo-cyan text-black font-orbitron font-bold text-xs hover:bg-cyan-300 transition-all flex items-center gap-2">
+            <i class="fas fa-plus"></i> Додати челендж
+          </button>
+        </div>
+      </form>
+
+      <!-- Task Manager Global Actions -->
+      <div class="flex flex-wrap items-center justify-between py-3 text-xs text-gray-400 border-b border-repo-border/60 gap-2">
+        <span class="font-orbitron text-gray-300">Перемикачі стану челенджів:</span>
+        <div class="flex flex-wrap gap-2.5">
+          <button onclick="toggleAllTasks(true)" class="text-repo-green hover:underline">Увімкнути всі</button>
+          <span>|</span>
+          <button onclick="toggleAllTasks(false)" class="text-repo-orange hover:underline">Викреслити всі</button>
+          <span>|</span>
+          <button onclick="resetDefaultTasks()" class="text-repo-cyan font-bold hover:underline">
+            <i class="fas fa-rotate-left mr-1"></i> Скинути за замовчуванням
+          </button>
+        </div>
+      </div>
+
+      <!-- Task Items List -->
+      <div id="tasksList" class="flex-grow overflow-y-auto space-y-2 py-3 pr-1"></div>
+
+      <div class="pt-4 border-t border-repo-border flex justify-end">
+        <button onclick="closeModal('tasksModal')" class="px-5 py-2.5 rounded-xl bg-repo-cardLight border border-repo-border text-white font-orbitron text-xs hover:border-repo-green transition-all">
+          Закрити
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL 4: EDIT TASK MODAL -->
+  <div id="editTaskModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-repo-card border border-repo-yellow/50 rounded-2xl max-w-xl w-full flex flex-col p-6 shadow-neon-yellow relative">
+      
+      <div class="flex items-center justify-between pb-4 border-b border-repo-border">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-repo-yellow/10 border border-repo-yellow/30 flex items-center justify-center text-repo-yellow">
+            <i class="fas fa-pen-to-square text-lg"></i>
+          </div>
+          <div>
+            <h2 class="font-orbitron font-bold text-lg text-white">Редагування челенджу</h2>
+            <p class="text-xs text-gray-400">Відредагуйте параметри та збережіть зміни</p>
+          </div>
+        </div>
+        <button onclick="closeModal('editTaskModal')" class="text-gray-400 hover:text-white p-2 text-xl">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <form id="editTaskForm" onsubmit="handleSaveEditedTask(event)" class="py-4 flex flex-col gap-3">
+        <input type="hidden" id="editTaskId">
+
+        <div>
+          <label class="block text-xs text-gray-400 font-orbitron mb-1">Назва челенджу:</label>
+          <input type="text" id="editTaskTitle" required class="w-full px-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-yellow text-white text-xs focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-xs text-gray-400 font-orbitron mb-1">Тип завдання:</label>
+            <select id="editTaskType" class="w-full px-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-yellow text-white text-xs focus:outline-none">
+              <option value="webcam">🎥 WebCam / IRL Челендж</option>
+              <option value="in_game">🎮 Внутрішньоігрове обмеження</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 font-orbitron mb-1">Колір сектора:</label>
+            <div class="flex items-center gap-2">
+              <input type="color" id="editTaskColor" class="w-10 h-9 rounded border-0 bg-transparent cursor-pointer">
+              <span class="text-xs text-gray-400">Палітра</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs text-gray-400 font-orbitron mb-1">🎥 IRL / WebCam Дія (перед камерою):</label>
+          <input type="text" id="editTaskIrl" placeholder="Наприклад: Зав'язати очі маскою..." class="w-full px-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-yellow text-white text-xs focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs text-gray-400 font-orbitron mb-1">🎮 Ігрове правило / Основна умова:</label>
+          <textarea id="editTaskDesc" required rows="2" class="w-full px-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-yellow text-white text-xs focus:outline-none resize-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs text-gray-400 font-orbitron mb-1">⚠️ Штрафи за порушення:</label>
+          <input type="text" id="editTaskPenalties" class="w-full px-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-yellow text-white text-xs focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs text-gray-400 font-orbitron mb-1">💡 Порада з виконання:</label>
+          <input type="text" id="editTaskTips" class="w-full px-3 py-2 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-yellow text-white text-xs focus:outline-none">
+        </div>
+
+        <div class="pt-3 border-t border-repo-border flex justify-end gap-2">
+          <button type="button" onclick="closeModal('editTaskModal')" class="px-4 py-2 rounded-xl bg-repo-bg border border-repo-border text-gray-300 font-orbitron text-xs hover:border-gray-500 transition-all">
+            Скасувати
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-repo-yellow text-black font-orbitron font-bold text-xs hover:bg-amber-300 transition-all flex items-center gap-2">
+            <i class="fas fa-floppy-disk"></i> Зберегти зміни
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- MODAL 5: SIMPLIFIED NICKNAME PROFILE MODAL -->
+  <div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-repo-card border border-repo-green/50 rounded-2xl max-w-md w-full flex flex-col p-6 shadow-neon-green relative">
+      
+      <div class="flex items-center justify-between pb-4 border-b border-repo-border">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-repo-green/10 border border-repo-green/30 flex items-center justify-center text-repo-green">
+            <i class="fas fa-id-badge text-lg"></i>
+          </div>
+          <div>
+            <h2 class="font-orbitron font-bold text-lg text-white">Профіль Оператора</h2>
+            <p class="text-xs text-gray-400">Введіть ваш Нікнейм для відображення в челенджах</p>
+          </div>
+        </div>
+        <button onclick="closeModal('authModal')" class="text-gray-400 hover:text-white p-2 text-xl">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <form id="nicknameAuthForm" onsubmit="handleNicknameSubmit(event)" class="py-4 flex flex-col gap-4">
+        <div>
+          <label class="block text-xs text-gray-400 font-orbitron mb-1.5">Ваш Нікнейм / Позивний:</label>
+          <div class="relative">
+            <i class="fas fa-user absolute left-3.5 top-3 text-repo-green text-xs"></i>
+            <input type="text" id="userNicknameInput" required minlength="2" maxlength="20" placeholder="Наприклад: Ghost_Rider" class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-repo-bg border border-repo-border focus:border-repo-green text-white text-xs font-orbitron font-semibold focus:outline-none">
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-repo-green/10 border border-repo-green/30 text-xs text-gray-300 leading-relaxed">
+          <i class="fas fa-info-circle text-repo-green mr-1"></i> Цей нікнейм буде автоматично прив'язуватися до всіх прийнятих вами челенджів!
+        </div>
+
+        <div class="flex gap-2">
+          <button type="button" onclick="generateRandomNickname()" class="px-3 py-2.5 rounded-xl border border-repo-border bg-repo-cardLight/80 text-gray-300 hover:text-white text-xs font-orbitron transition-all" title="Згенерувати випадковий нік">
+            <i class="fas fa-dice"></i>
+          </button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl bg-repo-green text-black font-orbitron font-bold text-xs hover:bg-emerald-400 transition-all shadow-lg shadow-repo-green/20 flex items-center justify-center gap-2">
+            <i class="fas fa-check"></i> Зберегти Нікнейм
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-repo-border/60 py-4 bg-repo-card/50 backdrop-blur-md text-center text-xs text-gray-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>Створено для стримерів та ґеймерів гри <strong class="text-repo-green font-orbitron">R.E.P.O.</strong></p>
+      <p class="text-gray-600">Колесо Фортуни • WebCam Edition v3.0</p>
+    </div>
+  </footer>
+
+  <!-- FIREBASE MODULE & APPLICATION LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { 
+      getAuth, 
+      signInAnonymously, 
+      signInWithCustomToken, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      getDoc, 
+      setDoc 
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Global variables & Config
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'repo-wheel-app';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+      apiKey: "AIzaSyDummyKeyForLocalFallbackOnly12345",
+      authDomain: "repo-wheel.firebaseapp.com",
+      projectId: "repo-wheel",
+      storageBucket: "repo-wheel.appspot.com",
+      messagingSenderId: "1234567890",
+      appId: "1:1234567890:web:1234567890"
+    };
+
+    let app, auth, db;
+    let currentUser = null;
+    window.userNickname = localStorage.getItem('repo_user_nickname') || 'Гравець';
+
+    try {
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+    } catch (err) {
+      console.warn("Firebase initialization error:", err);
+    }
+
+    // EXPANDED DEFAULT CHALLENGES DATABASE
+    const DEFAULT_TASKS = [
+      {
+        id: '1',
+        title: '🙈 Сліпий забіг (Blindfold Run)',
+        type: 'webcam',
+        irl: 'Фізично зав’язати очі маскою для сну, шарфом або пов’язкою перед камерою на весь рейд!',
+        desc: 'Грати повністю наосліп. Пересуватися та атакувати ТІЛЬКИ під підказки ваших тиммейтів.',
+        penalties: 'Якщо гравець зсуне пов’язку — загін мусить скинути весь поточний лут.',
+        tips: 'Тиммейти повинні буквально казати: "два кроки вперед, повернути наліво, удар ножем".',
+        color: '#ff0055',
+        enabled: true
+      },
+      {
+        id: '2',
+        title: '🧤 Рукавиці оператора',
+        type: 'webcam',
+        irl: 'Вдягнути товсті зимові рукавиці або кухонні прихватки (або склеїти два пальці скотчем).',
+        desc: 'Грати весь рейд на клавіатурі та миші у товстих рукавицях, не знімаючи їх.',
+        penalties: 'Зняття рукавиць карається забороною брати квестовий лут.',
+        tips: 'Будьте обережні з випадковими натисканнями клавіш!',
+        color: '#ff6600',
+        enabled: true
+      },
+      {
+        id: '3',
+        title: '🤐 Заклеєний рот (Mute IRL)',
+        type: 'webcam',
+        irl: 'Наклеїти шматочок скотчу/пластирю на рот або тримати олівець/ложку в зубах перед камерою.',
+        desc: 'Повна заборона на використання голосового чату. Спілкування тільки жестами перед камеру та в грі.',
+        penalties: 'Викрик або звук від гравця зобов’язує викинути найцінніший предмет.',
+        tips: 'Використовуйте ліхтарик, присідання та стрибки для сигналів.',
+        color: '#00f0ff',
+        enabled: true
+      },
+      {
+        id: '4',
+        title: '🧍 Стійка Дисципліна',
+        type: 'webcam',
+        irl: 'Грати весь рейд СТОЯЧИ перед веб-камерою з рівною позою.',
+        desc: 'Заборонено сідати на стілець від моменту десантування до повної евакуації.',
+        penalties: 'Якщо гравець сів — віддає одну батарею чи аптечку тиммейту.',
+        tips: 'Налаштуйте висоту монітора заздалегідь!',
+        color: '#00ff66',
+        enabled: true
+      },
+      {
+        id: '5',
+        title: '🕶️ Нічні Сонцезахисні Окуляри',
+        type: 'webcam',
+        irl: 'Вдягнути темні сонцезахисні окуляри перед камерою та грати в них у темній кімнаті.',
+        desc: 'Заборонено вмикати ігрові ліхтарики. Ви бачите лише те, що пробивається крізь темне скло.',
+        penalties: 'Вмикання ліхтарика зобов’язує заплющити очі на 10 секунд.',
+        tips: 'Орієнтуйтеся на спалахи та світло від союзників.',
+        color: '#b033ff',
+        enabled: true
+      },
+      {
+        id: '6',
+        title: '🪖 Шолом Важковаговика',
+        type: 'webcam',
+        irl: 'Одягнути каструлю, каску або шолом на голову перед камерою.',
+        desc: 'Вигравайте рейд, граючи тільки з важкими дворучними предметами або вантажами.',
+        penalties: 'За підбір дрібного предмета — викиньте всі батареї.',
+        tips: 'Шукайте великі сейфи, меблі та генератори.',
+        color: '#ffcc00',
+        enabled: true
+      },
+      {
+        id: '7',
+        title: '🎧 Навушники задом наперед',
+        type: 'webcam',
+        irl: 'Надягти навушники задом наперед (лівий канал у правому вусі, правий — у лівому).',
+        desc: 'Грати з інвертованим стереозвуком. Усі звуки монстрів та кроків лунають з протилежного боку!',
+        penalties: 'Знімання навушників заборонено.',
+        tips: 'Пам’ятайте: якщо звук справа — загроза зліва!',
+        color: '#f43f5e',
+        enabled: true
+      },
+      {
+        id: '8',
+        title: '🦷 Без рук (Chin & Nose Controller)',
+        type: 'webcam',
+        irl: 'Грати рейд, тримаючи мишку або клавіатуру підборіддям, ліктями або носом перед камерою!',
+        desc: 'Використання пальців рук заборонено для руху миші. Тільки лікті чи підборіддя.',
+        penalties: 'Торкнення мишки пальцем зобов’язує викинути зброю.',
+        tips: 'Покладіть мишку на м’яку килимову поверхню.',
+        color: '#e11d48',
+        enabled: true
+      },
+      {
+        id: '9',
+        title: '🪞 Дзеркальна Вебка (Mirror Motion)',
+        type: 'webcam',
+        irl: 'Перевернути або віддзеркалити відображення веб-камери для глядачів та ввімкнути інверсію миші у грі.',
+        desc: 'Грати весь рейд з увімкненою інверсією миші (Inverted Y/X Axis).',
+        penalties: 'Вимкнення інверсії заборонено.',
+        tips: 'Спробуйте плавно вести мишку.',
+        color: '#0284c7',
+        enabled: true
+      },
+      {
+        id: '10',
+        title: '🧳 Захисник Валізи',
+        type: 'in_game',
+        irl: '',
+        desc: 'Знайдіть першу цінність чи коробку. Один гравець мусить нести її всю гру і ні за яких обставин не випускати.',
+        penalties: 'Якщо валіза випадає з рук, весь загін зупиняється на 15 секунд.',
+        tips: 'Захисник має йти посередині групи.',
+        color: '#3b82f6',
+        enabled: true
+      },
+      {
+        id: '11',
+        title: '🥷 Спринтер-Одинак',
+        type: 'in_game',
+        irl: '',
+        desc: 'Одразу після десантування розділіться з командою і досліджуйте протилежний край карти насамоті.',
+        penalties: 'Наближення до союзників ближче ніж на 20 метрів заборонено.',
+        tips: 'Будьте обережні в вузьких коридорах.',
+        color: '#10b981',
+        enabled: true
+      },
+      {
+        id: '12',
+        title: '💎 Мінімаліст Евакуації',
+        type: 'in_game',
+        irl: '',
+        desc: 'Ви маєте право винести з локації лише 1 єдиний предмет. Проте він повинен бути найціннішим.',
+        penalties: 'При принесенні більше 1 предмета до корабля — жоден не зараховується.',
+        tips: 'Шукайте головну сейф-кімнату.',
+        color: '#ffaa00',
+        enabled: true
+      },
+      {
+        id: '13',
+        title: '🚫 Пацифіст-Збирач',
+        type: 'in_game',
+        irl: '',
+        desc: 'Заборонено наносити будь-яку шкоду монстрам чи супротивникам. Тільки стелс та втеча.',
+        penalties: 'Випадковий удар по монстру карається виправним скиданням усього рюкзака.',
+        tips: 'Використовуйте відволікаючі шуми.',
+        color: '#8b5cf6',
+        enabled: true
+      },
+      {
+        id: '14',
+        title: '🔦 Темний Тунель (No Flashlights)',
+        type: 'in_game',
+        irl: '',
+        desc: 'Заборонено використовувати будь-які ліхтарики або джерела світла у підземеллях та будівлях.',
+        penalties: 'Вмикання ліхтаря — весь загін зупиняється на 10 секунд.',
+        tips: 'Слідуйте за звуками кроків тиммейтів.',
+        color: '#ec4899',
+        enabled: true
+      },
+      {
+        id: '15',
+        title: '🐢 Суперелітна Повільність',
+        type: 'in_game',
+        irl: '',
+        desc: 'Заборонено використовувати спринт (біг). Пересуватися можна виключно кроком або присідаючи.',
+        penalties: 'Натискання клавіші бігу зобов’язує присісти на 15 секунд.',
+        tips: 'Розраховуйте час евакуації заздалегідь!',
+        color: '#14b8a6',
+        enabled: true
+      }
+    ];
+
+    window.tasks = [];
+    window.gameHistory = [];
+    window.acceptedTasks = [];
+    window.completedCount = 0;
+    window.isSoundMuted = false;
+    window.currentRightPanel = 'history';
+    window.currentModeFilter = 'all';
+    window.expandedCardId = null;
+
+    // Explicit Window Modal Helper Binding
+    window.openModal = function(id) {
+      const m = document.getElementById(id);
+      if (m) {
+        m.classList.remove('opacity-0', 'pointer-events-none');
+      }
+    };
+
+    window.closeModal = function(id) {
+      const m = document.getElementById(id);
+      if (m) {
+        m.classList.add('opacity-0', 'pointer-events-none');
+      }
+    };
+
+    // Load Local/Cloud Data
+    window.initData = function() {
+      const savedTasks = localStorage.getItem('repo_wheel_tasks_v6');
+      if (savedTasks) {
+        try {
+          window.tasks = JSON.parse(savedTasks);
+          if (!Array.isArray(window.tasks) || window.tasks.length === 0) window.tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+        } catch (e) {
+          window.tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+        }
+      } else {
+        window.tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+      }
+
+      const savedMute = localStorage.getItem('repo_wheel_sound_muted');
+      if (savedMute !== null) {
+        window.isSoundMuted = JSON.parse(savedMute);
+        updateSoundIcon();
+      }
+
+      updateUserNicknameUI();
+      updateStats();
+      renderTasksList();
+      renderDetailsList();
+    };
+
+    function updateUserNicknameUI() {
+      const btnText = document.getElementById('userStatusText');
+      const input = document.getElementById('userNicknameInput');
+      if (btnText) btnText.innerText = window.userNickname;
+      if (input) input.value = window.userNickname;
+    }
+
+    window.handleNicknameSubmit = function(e) {
+      e.preventDefault();
+      const input = document.getElementById('userNicknameInput');
+      if (input && input.value.trim()) {
+        window.userNickname = input.value.trim();
+        localStorage.setItem('repo_user_nickname', window.userNickname);
+        updateUserNicknameUI();
+        window.closeModal('authModal');
+        window.saveTasks();
+      }
+    };
+
+    window.generateRandomNickname = function() {
+      const prefixes = ['Operator', 'Scavenger', 'Hunter', 'Ghost', 'Rookie', 'Viper', 'Cyber', 'Echo'];
+      const randomNum = Math.floor(1000 + Math.random() * 9000);
+      const randomName = `${prefixes[Math.floor(Math.random() * prefixes.length)]}-${randomNum}`;
+      const input = document.getElementById('userNicknameInput');
+      if (input) input.value = randomName;
+    };
+
+    window.saveTasks = function() {
+      localStorage.setItem('repo_wheel_tasks_v6', JSON.stringify(window.tasks));
+      updateStats();
+      drawWheel();
+      renderDetailsList();
+
+      // Sync to Firestore if authenticated
+      if (currentUser && db) {
+        try {
+          const userDoc = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'userWheelData');
+          setDoc(userDoc, {
+            tasks: window.tasks,
+            completedCount: window.completedCount,
+            nickname: window.userNickname,
+            updatedAt: new Date().toISOString()
+          }, { merge: true });
+        } catch (e) {
+          console.warn("Firestore sync error:", e);
+        }
+      }
+    };
+
+    // Firebase Auth Initialization & Listeners
+    async function initFirebaseAuth() {
+      if (!auth) return;
+
+      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+        try {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } catch (e) {
+          await signInAnonymously(auth);
+        }
+      } else {
+        try {
+          await signInAnonymously(auth);
+        } catch (e) {}
+      }
+
+      onAuthStateChanged(auth, async (user) => {
+        currentUser = user;
+        if (user) {
+          try {
+            const userDoc = doc(db, 'artifacts', appId, 'users', user.uid, 'settings', 'userWheelData');
+            const docSnap = await getDoc(userDoc);
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              if (data.nickname) {
+                window.userNickname = data.nickname;
+                localStorage.setItem('repo_user_nickname', data.nickname);
+                updateUserNicknameUI();
+              }
+              if (data.tasks && Array.isArray(data.tasks)) {
+                window.tasks = data.tasks;
+                window.completedCount = data.completedCount || 0;
+                localStorage.setItem('repo_wheel_tasks_v6', JSON.stringify(window.tasks));
+                updateStats();
+                drawWheel();
+                renderTasksList();
+                renderDetailsList();
+              }
+            }
+          } catch (err) {
+            console.warn("Error fetching user cloud data:", err);
+          }
+        }
+      });
+    }
+
+    // Audio Synthesizer
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    window.toggleSound = function() {
+      window.isSoundMuted = !window.isSoundMuted;
+      localStorage.setItem('repo_wheel_sound_muted', JSON.stringify(window.isSoundMuted));
+      updateSoundIcon();
+    };
+
+    function updateSoundIcon() {
+      const icon = document.getElementById('soundIcon');
+      if (window.isSoundMuted) {
+        icon.className = 'fas fa-volume-mute text-gray-500';
+      } else {
+        icon.className = 'fas fa-volume-up text-repo-green';
+      }
+    }
+
+    function playClickSound() {
+      if (window.isSoundMuted) return;
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(1100, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(250, ctx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.04);
+      } catch (e) {}
+    }
+
+    function playVictorySound() {
+      if (window.isSoundMuted) return;
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const notes = [261.63, 329.63, 392.00, 523.25, 659.25];
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+          gain.gain.setValueAtTime(0.18, now + idx * 0.07);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.3);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.07);
+          osc.stop(now + idx * 0.07 + 0.3);
+        });
+      } catch (e) {}
+    }
+
+    // Canvas Wheel Setup
+    const canvas = document.getElementById('wheelCanvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    let currentAngle = 0;
+    let isSpinning = false;
+    let selectedTask = null;
+
+    function setupCanvas() {
+      if (!canvas || !ctx) return;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      drawWheel();
+    }
+
+    window.addEventListener('resize', setupCanvas);
+
+    window.setModeFilter = function(mode) {
+      window.currentModeFilter = mode;
+
+      const btnAll = document.getElementById('filterBtnAll');
+      const btnWebcam = document.getElementById('filterBtnWebcam');
+      const btnGame = document.getElementById('filterBtnGame');
+      const modeLabel = document.getElementById('currentModeLabel');
+
+      const activeClass = "px-4 py-2 rounded-xl text-xs font-orbitron font-bold transition-all border border-repo-green bg-repo-green text-black shadow-neon-green";
+      const inactiveClass = "px-4 py-2 rounded-xl text-xs font-orbitron font-bold transition-all border border-repo-border bg-repo-cardLight/80 text-gray-300 hover:text-repo-magenta hover:border-repo-magenta/60";
+
+      if (btnAll) btnAll.className = mode === 'all' ? activeClass : inactiveClass;
+      if (btnWebcam) btnWebcam.className = mode === 'webcam' ? activeClass : inactiveClass;
+      if (btnGame) btnGame.className = mode === 'in_game' ? activeClass : inactiveClass;
+
+      if (modeLabel) {
+        if (mode === 'all') modeLabel.innerText = "Все підряд";
+        else if (mode === 'webcam') modeLabel.innerText = "Тільки WebCam";
+        else if (mode === 'in_game') modeLabel.innerText = "Тільки Внутрішньоігрове";
+      }
+
+      drawWheel();
+      updateStats();
+    };
+
+    function getActiveTasks() {
+      return window.tasks.filter(t => {
+        if (!t.enabled) return false;
+        if (window.currentModeFilter === 'webcam') return t.type === 'webcam';
+        if (window.currentModeFilter === 'in_game') return t.type === 'in_game';
+        return true;
+      });
+    }
+
+    function drawWheel() {
+      if (!canvas || !ctx) return;
+      const activeTasks = getActiveTasks();
+      const rect = canvas.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const radius = Math.min(centerX, centerY) - 8;
+
+      ctx.clearRect(0, 0, width, height);
+
+      if (activeTasks.length === 0) {
+        ctx.save();
+        ctx.fillStyle = '#0f141f';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = 'bold 12px Orbitron, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Немає активних завдань', centerX, centerY - 10);
+        ctx.fillStyle = '#64748b';
+        ctx.font = '10px Inter, sans-serif';
+        ctx.fillText('Увімкніть челенджі у керуванні', centerX, centerY + 10);
+        ctx.restore();
+        return;
+      }
+
+      const sliceAngle = (Math.PI * 2) / activeTasks.length;
+
+      activeTasks.forEach((task, i) => {
+        const startAngle = currentAngle + i * sliceAngle;
+        const endAngle = startAngle + sliceAngle;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.closePath();
+
+        ctx.fillStyle = task.color;
+        ctx.fill();
+
+        ctx.strokeStyle = '#07090e';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(0,0,0,0.18)';
+        ctx.fill();
+
+        ctx.translate(centerX, centerY);
+        ctx.rotate(startAngle + sliceAngle / 2);
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 11px Orbitron, sans-serif';
+        
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+        ctx.shadowBlur = 5;
+
+        let text = task.title;
+        if (text.length > 17) {
+          text = text.substring(0, 15) + '...';
+        }
+
+        ctx.fillText(text, radius - 22, 0);
+        ctx.restore();
+      });
+
+      // Outer Pins Glow
+      const totalPins = activeTasks.length;
+      for (let i = 0; i < totalPins; i++) {
+        const pinAngle = currentAngle + i * sliceAngle;
+        const pinX = centerX + (radius - 6) * Math.cos(pinAngle);
+        const pinY = centerY + (radius - 6) * Math.sin(pinAngle);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(pinX, pinY, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#00ff66';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.strokeStyle = '#07090e';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Outer Border Ring
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 6;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Spin Logic
+    let lastPinIndex = -1;
+
+    window.spinWheel = function() {
+      const activeTasks = getActiveTasks();
+      if (isSpinning || activeTasks.length === 0) return;
+
+      isSpinning = true;
+      const spinBtn = document.getElementById('spinBtn');
+      if (spinBtn) {
+        spinBtn.classList.remove('spin-btn-active');
+        spinBtn.disabled = true;
+      }
+
+      const randomIndex = Math.floor(Math.random() * activeTasks.length);
+      const sliceAngle = (Math.PI * 2) / activeTasks.length;
+
+      const targetSliceCenter = randomIndex * sliceAngle + sliceAngle / 2;
+      const pointerAngle = -Math.PI / 2; 
+
+      const fullSpins = 5 + Math.floor(Math.random() * 3);
+      const targetAngle = pointerAngle - targetSliceCenter + (fullSpins * Math.PI * 2);
+
+      const startAngle = currentAngle % (Math.PI * 2);
+      const angleDiff = targetAngle - startAngle;
+
+      const duration = 4600;
+      const startTime = performance.now();
+
+      function animateSpin(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3.5);
+
+        currentAngle = startAngle + angleDiff * easeOut;
+
+        const normalizedAngle = (currentAngle % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+        const currentPinIndex = Math.floor(normalizedAngle / sliceAngle);
+        if (currentPinIndex !== lastPinIndex) {
+          playClickSound();
+          lastPinIndex = currentPinIndex;
+        }
+
+        drawWheel();
+
+        if (progress < 1) {
+          requestAnimationFrame(animateSpin);
+        } else {
+          isSpinning = false;
+          if (spinBtn) {
+            spinBtn.disabled = false;
+            spinBtn.classList.add('spin-btn-active');
+          }
+
+          selectedTask = activeTasks[randomIndex];
+          playVictorySound();
+          triggerConfetti();
+          showResultModal(selectedTask);
+          addHistoryItem(selectedTask);
+        }
+      }
+
+      requestAnimationFrame(animateSpin);
+    };
+
+    if (canvas) {
+      canvas.addEventListener('click', window.spinWheel);
+    }
+
+    function triggerConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 85,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#00ff66', '#ff6600', '#00f0ff', '#ffcc00', '#ff0055', '#b033ff']
+        });
+      }
+    }
+
+    // Modal Results Logic
+    function showResultModal(task) {
+      document.getElementById('modalTaskTitle').innerText = task.title;
+      document.getElementById('modalTaskDesc').innerText = task.desc;
+
+      const badgeContainer = document.getElementById('modalCategoryBadge');
+      const irlBox = document.getElementById('modalIrlBox');
+      const irlDesc = document.getElementById('modalIrlDesc');
+      const headerIcon = document.getElementById('modalHeaderIcon');
+
+      if (task.type === 'webcam') {
+        badgeContainer.innerHTML = `
+          <span class="text-xs font-orbitron font-bold text-repo-magenta tracking-widest uppercase bg-repo-magenta/10 px-3 py-1 rounded-full border border-repo-magenta/40 flex items-center gap-1.5 shadow-neon-magenta">
+            <i class="fas fa-video live-dot"></i> 🎥 WEBCAM / IRL ЧЕЛЕНДЖ
+          </span>
+        `;
+        irlBox.classList.remove('hidden');
+        irlDesc.innerText = task.irl || 'Виконати фізичну дію перед веб-камерою на стрімі!';
+        headerIcon.className = 'fas fa-video text-repo-magenta';
+      } else {
+        badgeContainer.innerHTML = `
+          <span class="text-xs font-orbitron font-bold text-repo-cyan tracking-widest uppercase bg-repo-cyan/10 px-3 py-1 rounded-full border border-repo-cyan/40 flex items-center gap-1.5 shadow-neon-cyan">
+            <i class="fas fa-gamepad"></i> 🎮 ВНУТРІШНЬОІГРОВЕ ОБМЕЖЕННЯ
+          </span>
+        `;
+        irlBox.classList.add('hidden');
+        headerIcon.className = 'fas fa-trophy text-repo-green';
+      }
+
+      document.getElementById('modalTaskPenalties').innerText = task.penalties || 'Немає окремих штрафів.';
+      document.getElementById('modalTaskTips').innerText = task.tips || 'Грайте злагоджено з командою!';
+
+      document.getElementById('modalDeepDetailsContainer').classList.add('hidden');
+      document.getElementById('toggleModalDeepBtn').querySelector('span').innerText = 'Показати розширені умови та штрафи';
+
+      window.openModal('resultModal');
+    }
+
+    window.toggleResultModalDeepDetails = function() {
+      const container = document.getElementById('modalDeepDetailsContainer');
+      const btnSpan = document.getElementById('toggleModalDeepBtn').querySelector('span');
+      if (container.classList.contains('hidden')) {
+        container.classList.remove('hidden');
+        btnSpan.innerText = 'Сховати додаткові деталі';
+      } else {
+        container.classList.add('hidden');
+        btnSpan.innerText = 'Показати розширені умови та штрафи';
+      }
+    };
+
+    window.acceptTask = function() {
+      window.completedCount++;
+      if (selectedTask) {
+        window.acceptedTasks.unshift({
+          ...selectedTask,
+          assignedUser: window.userNickname || 'Гравець',
+          acceptedTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+        renderActiveAcceptedList();
+      }
+      window.saveTasks();
+      window.closeModal('resultModal');
+    };
+
+    // EXCLUDE / DISABLE LOGIC
+    window.excludeAndCloseTask = function() {
+      if (selectedTask) {
+        const taskIdx = window.tasks.findIndex(t => t.id === selectedTask.id);
+        if (taskIdx !== -1) {
+          window.tasks[taskIdx].enabled = false;
+          window.saveTasks();
+          renderTasksList();
+        }
+      }
+      window.closeModal('resultModal');
+    };
+
+    window.restoreExcludedTasks = function() {
+      let countRestored = 0;
+      window.tasks.forEach(t => {
+        if (!t.enabled) {
+          t.enabled = true;
+          countRestored++;
+        }
+      });
+      if (countRestored > 0) {
+        window.saveTasks();
+        renderTasksList();
+      }
+    };
+
+    function addHistoryItem(task) {
+      window.gameHistory.unshift({
+        title: task.title,
+        color: task.color,
+        type: task.type,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        taskRef: task
+      });
+
+      if (window.gameHistory.length > 15) window.gameHistory.pop();
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const historyList = document.getElementById('historyList');
+      if (!historyList) return;
+      if (window.gameHistory.length === 0) {
+        historyList.innerHTML = `<div class="text-center text-gray-500 py-12 italic">Історія порожня. Покрутіть колесо!</div>`;
+        return;
+      }
+
+      historyList.innerHTML = window.gameHistory.map((item) => `
+        <div class="p-2.5 rounded-xl bg-repo-bg/80 border border-repo-border flex items-center justify-between text-xs hover:border-repo-yellow/40 transition-all cursor-pointer" onclick="openSingleChallengeDetails('${item.taskRef.id}')">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${item.color}"></span>
+            <span class="font-medium text-gray-200 truncate">${item.title}</span>
+          </div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            ${item.type === 'webcam' ? '<i class="fas fa-video text-repo-magenta text-[10px]"></i>' : ''}
+            <span class="text-[10px] font-orbitron text-gray-500">${item.time}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderActiveAcceptedList() {
+      const activeList = document.getElementById('activeAcceptedList');
+      const badge = document.getElementById('activeCountBadge');
+      if (badge) badge.innerText = window.acceptedTasks.length;
+      if (!activeList) return;
+
+      if (window.acceptedTasks.length === 0) {
+        activeList.innerHTML = `<div class="text-center text-gray-500 py-12 italic">Немає активних прийнятих челенджів.</div>`;
+        return;
+      }
+
+      activeList.innerHTML = window.acceptedTasks.map((t, index) => `
+        <div class="p-2.5 rounded-xl bg-repo-bg/80 border border-repo-green/40 flex flex-col gap-1 text-xs">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2 min-w-0">
+              <i class="fas fa-check-circle text-repo-green text-xs flex-shrink-0"></i>
+              <span class="font-bold text-white truncate">${t.title}</span>
+            </div>
+            <button onclick="removeAcceptedTask(${index})" class="text-gray-500 hover:text-repo-magenta p-1 transition-colors flex-shrink-0" title="Видалити зі списку прийнятих">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          
+          <div class="flex items-center justify-between pt-1 border-t border-repo-border/50 text-[11px]">
+            <span class="px-2 py-0.5 rounded bg-repo-green/10 border border-repo-green/30 text-repo-green font-orbitron font-semibold flex items-center gap-1">
+              <i class="fas fa-user text-[9px]"></i> ${t.assignedUser || 'Гравець'}
+            </span>
+            <span class="text-gray-500 font-orbitron">${t.acceptedTime}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.removeAcceptedTask = function(index) {
+      window.acceptedTasks.splice(index, 1);
+      renderActiveAcceptedList();
+    };
+
+    window.switchRightPanel = function(panel) {
+      window.currentRightPanel = panel;
+      const historyBtn = document.getElementById('tabHistoryBtn');
+      const activeBtn = document.getElementById('tabActiveBtn');
+      const historyList = document.getElementById('historyList');
+      const activeList = document.getElementById('activeAcceptedList');
+
+      if (panel === 'history') {
+        if (historyBtn) historyBtn.className = "font-orbitron font-bold text-xs uppercase tracking-wider text-repo-yellow border-b-2 border-repo-yellow pb-1";
+        if (activeBtn) activeBtn.className = "font-orbitron font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white pb-1";
+        if (historyList) historyList.classList.remove('hidden');
+        if (activeList) activeList.classList.add('hidden');
+      } else {
+        if (activeBtn) activeBtn.className = "font-orbitron font-bold text-xs uppercase tracking-wider text-repo-green border-b-2 border-repo-green pb-1";
+        if (historyBtn) historyBtn.className = "font-orbitron font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white pb-1";
+        if (activeList) activeList.classList.remove('hidden');
+        if (historyList) historyList.classList.add('hidden');
+      }
+    };
+
+    window.clearHistory = function() {
+      window.gameHistory = [];
+      renderHistory();
+    };
+
+    function updateStats() {
+      const activeTasksCount = getActiveTasks().length;
+      const disabledTasksCount = window.tasks.filter(t => !t.enabled).length;
+
+      const statTotal = document.getElementById('statTotal');
+      const statActive = document.getElementById('statActive');
+      const statDisabled = document.getElementById('statDisabled');
+      const statCompleted = document.getElementById('statCompleted');
+      const tasksBadge = document.getElementById('tasksBadge');
+
+      if (statTotal) statTotal.innerText = window.tasks.length;
+      if (statActive) statActive.innerText = activeTasksCount;
+      if (statDisabled) statDisabled.innerText = disabledTasksCount;
+      if (statCompleted) statCompleted.innerText = window.completedCount;
+      if (tasksBadge) tasksBadge.innerText = activeTasksCount;
+    }
+
+    // ACCORDION DETAILS LIST
+    window.renderDetailsList = function() {
+      const container = document.getElementById('detailsCardsList');
+      if (!container) return;
+      const searchQuery = (document.getElementById('searchChallengeInput')?.value || '').toLowerCase();
+
+      const filtered = window.tasks.filter(t => 
+        t.title.toLowerCase().includes(searchQuery) ||
+        t.desc.toLowerCase().includes(searchQuery) ||
+        (t.irl && t.irl.toLowerCase().includes(searchQuery))
+      );
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="text-center text-gray-500 py-10 italic">Челенджів не знайдено.</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(task => {
+        const isExpanded = window.expandedCardId === task.id;
+
+        return `
+          <div class="rounded-xl border transition-all ${isExpanded ? 'bg-repo-bg border-repo-yellow shadow-neon-yellow' : 'bg-repo-bg/60 border-repo-border hover:border-gray-500'} overflow-hidden">
+            <div onclick="toggleCardAccordion('${task.id}')" class="p-3.5 flex items-center justify-between cursor-pointer select-none">
+              <div class="flex items-center gap-3 min-w-0">
+                <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: ${task.color}"></span>
+                <div class="min-w-0">
+                  <h3 class="font-orbitron font-bold text-xs sm:text-sm text-white flex items-center gap-2 truncate">
+                    ${task.title}
+                    ${task.enabled ? '' : '<span class="px-2 py-0.5 rounded text-[9px] bg-repo-orange/20 text-repo-orange border border-repo-orange/30 font-sans">Викреслено</span>'}
+                  </h3>
+                  <p class="text-xs text-gray-400 truncate mt-0.5">${task.desc}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+                <button onclick="event.stopPropagation(); openEditTaskModal('${task.id}')" class="p-1.5 text-gray-400 hover:text-repo-yellow transition-colors" title="Редагувати">
+                  <i class="fas fa-pen text-xs"></i>
+                </button>
+                <i class="fas ${isExpanded ? 'fa-chevron-up text-repo-yellow' : 'fa-chevron-down text-gray-500'} text-xs"></i>
+              </div>
+            </div>
+
+            ${isExpanded ? `
+              <div class="px-4 pb-4 pt-2 border-t border-repo-border/60 text-xs space-y-3 bg-repo-darker/60">
+                ${task.irl ? `
+                  <div class="p-2.5 rounded-lg bg-repo-magenta/10 border border-repo-magenta/30">
+                    <h4 class="font-orbitron font-semibold text-repo-magenta mb-1 flex items-center gap-1.5">
+                      <i class="fas fa-video"></i> 🎥 IRL / WEBCAM ДІЯ:
+                    </h4>
+                    <p class="text-gray-200 font-medium">${task.irl}</p>
+                  </div>
+                ` : ''}
+
+                <div>
+                  <h4 class="font-orbitron font-semibold text-repo-cyan mb-1 flex items-center gap-1.5">
+                    <i class="fas fa-gamepad"></i> 🎮 ІГРОВЕ ПРАВИЛО:
+                  </h4>
+                  <p class="text-gray-300 leading-relaxed">${task.desc}</p>
+                </div>
+
+                ${task.penalties ? `
+                  <div>
+                    <h4 class="font-orbitron font-semibold text-repo-yellow mb-1 flex items-center gap-1.5">
+                      <i class="fas fa-shield-halved"></i> ШТРАФИ ЗА ПОРУШЕННЯ:
+                    </h4>
+                    <p class="text-gray-300 leading-relaxed">${task.penalties}</p>
+                  </div>
+                ` : ''}
+
+                ${task.tips ? `
+                  <div>
+                    <h4 class="font-orbitron font-semibold text-repo-green mb-1 flex items-center gap-1.5">
+                      <i class="fas fa-lightbulb"></i> ПОРАДА ТА ТАКТИКА:
+                    </h4>
+                    <p class="text-gray-300 leading-relaxed">${task.tips}</p>
+                  </div>
+                ` : ''}
+
+                <div class="pt-2 flex justify-between items-center border-t border-repo-border/40">
+                  <button onclick="openEditTaskModal('${task.id}')" class="px-3 py-1.5 rounded-lg bg-repo-yellow/20 border border-repo-yellow/40 text-repo-yellow font-orbitron font-bold text-xs hover:bg-repo-yellow hover:text-black transition-all flex items-center gap-1.5">
+                    <i class="fas fa-pen"></i> Редагувати
+                  </button>
+                  <button onclick="quickShowInResultModal('${task.id}')" class="px-3 py-1.5 rounded-lg bg-repo-card border border-repo-border hover:border-repo-green text-gray-300 font-orbitron text-xs transition-all">
+                    Показати у картці
+                  </button>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    };
+
+    window.toggleCardAccordion = function(id) {
+      window.expandedCardId = window.expandedCardId === id ? null : id;
+      window.renderDetailsList();
+    };
+
+    window.openSingleChallengeDetails = function(id) {
+      window.expandedCardId = id;
+      window.renderDetailsList();
+      window.openModal('viewDetailsModal');
+    };
+
+    window.quickShowInResultModal = function(id) {
+      const task = window.tasks.find(t => t.id === id);
+      if (task) {
+        window.closeModal('viewDetailsModal');
+        showResultModal(task);
+      }
+    };
+
+    // TASKS MANAGER LOGIC WITH TOGGLE SWITCHES
+    function renderTasksList() {
+      const tasksList = document.getElementById('tasksList');
+      if (!tasksList) return;
+      tasksList.innerHTML = window.tasks.map(task => `
+        <div class="p-3 rounded-xl ${task.enabled ? 'bg-repo-bg/70 border-repo-border' : 'bg-repo-darker/80 border-repo-border/40 opacity-75'} border flex items-center justify-between gap-3 text-xs sm:text-sm transition-all">
+          
+          <div class="flex items-center gap-3 flex-grow min-w-0">
+            <!-- Toggle Switch for Soft Enable/Disable -->
+            <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+              <input type="checkbox" ${task.enabled ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="sr-only peer">
+              <div class="w-9 h-5 bg-repo-card border border-repo-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gray-400 after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-repo-green/30 peer-checked:border-repo-green peer-checked:after:bg-repo-green"></div>
+            </label>
+
+            <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: ${task.color}"></span>
+            
+            <div class="truncate min-w-0">
+              <h4 class="font-orbitron font-semibold text-white truncate flex items-center gap-2">
+                <span class="${task.enabled ? '' : 'line-through text-gray-500'}">${task.title}</span>
+                <span class="text-[10px] text-gray-400 font-sans font-normal">(${task.type === 'webcam' ? '🎥 WebCam' : '🎮 Game'})</span>
+              </h4>
+              <p class="text-gray-400 text-xs truncate">${task.desc}</p>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button onclick="openEditTaskModal('${task.id}')" class="text-gray-400 hover:text-repo-yellow p-1.5 transition-colors" title="Редагувати">
+              <i class="fas fa-pen text-xs"></i>
+            </button>
+            <button onclick="toggleTask('${task.id}')" class="p-1.5 text-xs font-orbitron font-bold transition-colors ${task.enabled ? 'text-repo-orange hover:text-red-400' : 'text-repo-green hover:text-emerald-300'}" title="${task.enabled ? 'Викреслити' : 'Увімкнути'}">
+              ${task.enabled ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>'}
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // EDIT TASK FORM
+    window.openEditTaskModal = function(taskId) {
+      const task = window.tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      document.getElementById('editTaskId').value = task.id;
+      document.getElementById('editTaskTitle').value = task.title;
+      document.getElementById('editTaskType').value = task.type || 'in_game';
+      document.getElementById('editTaskColor').value = task.color || '#ff0055';
+      document.getElementById('editTaskIrl').value = task.irl || '';
+      document.getElementById('editTaskDesc').value = task.desc || '';
+      document.getElementById('editTaskPenalties').value = task.penalties || '';
+      document.getElementById('editTaskTips').value = task.tips || '';
+
+      window.openModal('editTaskModal');
+    };
+
+    window.handleSaveEditedTask = function(e) {
+      e.preventDefault();
+      const id = document.getElementById('editTaskId').value;
+      const taskIdx = window.tasks.findIndex(t => t.id === id);
+
+      if (taskIdx !== -1) {
+        window.tasks[taskIdx] = {
+          ...window.tasks[taskIdx],
+          title: document.getElementById('editTaskTitle').value.trim(),
+          type: document.getElementById('editTaskType').value,
+          color: document.getElementById('editTaskColor').value,
+          irl: document.getElementById('editTaskIrl').value.trim(),
+          desc: document.getElementById('editTaskDesc').value.trim(),
+          penalties: document.getElementById('editTaskPenalties').value.trim(),
+          tips: document.getElementById('editTaskTips').value.trim()
+        };
+
+        window.saveTasks();
+        renderTasksList();
+        renderHistory();
+        window.closeModal('editTaskModal');
+      }
+    };
+
+    window.toggleTask = function(id) {
+      const task = window.tasks.find(t => t.id === id);
+      if (task) {
+        task.enabled = !task.enabled;
+        window.saveTasks();
+        renderTasksList();
+      }
+    };
+
+    window.toggleAllTasks = function(enable) {
+      window.tasks.forEach(t => t.enabled = enable);
+      window.saveTasks();
+      renderTasksList();
+    };
+
+    window.resetDefaultTasks = function() {
+      window.tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+      window.saveTasks();
+      renderTasksList();
+    };
+
+    window.handleAddTask = function(e) {
+      e.preventDefault();
+      const titleInput = document.getElementById('newTaskTitle');
+      const typeInput = document.getElementById('newTaskType');
+      const irlInput = document.getElementById('newTaskIrl');
+      const descInput = document.getElementById('newTaskDesc');
+      const penaltiesInput = document.getElementById('newTaskPenalties');
+      const tipsInput = document.getElementById('newTaskTips');
+      const colorInput = document.getElementById('newTaskColor');
+
+      const newTask = {
+        id: Date.now().toString(),
+        title: titleInput.value.trim(),
+        type: typeInput.value,
+        irl: irlInput.value.trim(),
+        desc: descInput.value.trim(),
+        penalties: penaltiesInput.value.trim(),
+        tips: tipsInput.value.trim(),
+        color: colorInput.value,
+        enabled: true
+      };
+
+      window.tasks.push(newTask);
+      window.saveTasks();
+
+      titleInput.value = '';
+      irlInput.value = '';
+      descInput.value = '';
+      penaltiesInput.value = '';
+      tipsInput.value = '';
+      renderTasksList();
+    };
+
+    // INITIALIZATION ON LOAD
+    window.onload = function() {
+      window.initData();
+      setupCanvas();
+      initFirebaseAuth();
+    };
+  </script>
+</body>
+</html>
